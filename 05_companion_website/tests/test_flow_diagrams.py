@@ -1,6 +1,10 @@
 import unittest
 
-from flow_diagrams import mermaid_to_plotly, parse_mermaid_flowchart
+from flow_diagrams import (
+    _layered_layout,
+    mermaid_to_plotly,
+    parse_mermaid_flowchart,
+)
 
 
 USER_EXAMPLE = """flowchart TD
@@ -46,6 +50,21 @@ class FlowDiagramTests(unittest.TestCase):
 
         self.assertEqual(nodes["A"], "EMT induction")
         self.assertEqual(len(edges), 1)
+
+    def test_offsets_edge_label_away_from_edge_midpoint(self):
+        text = "flowchart TD\nA[Source] -->|activates| B[Target]"
+        nodes, edges = parse_mermaid_flowchart(text)
+        positions = _layered_layout(nodes, edges)
+
+        figure = mermaid_to_plotly(text)
+        annotation = next(
+            item for item in figure.layout.annotations if item.text == "<b>activates</b>"
+        )
+        source_y = positions["A"][1] - 0.88 / 2
+        target_y = positions["B"][1] + 0.88 / 2
+        edge_midpoint_y = (source_y + target_y) / 2
+
+        self.assertAlmostEqual(annotation.y - edge_midpoint_y, 0.55)
 
     def test_builds_styled_plotly_figure(self):
         figure = mermaid_to_plotly(USER_EXAMPLE)

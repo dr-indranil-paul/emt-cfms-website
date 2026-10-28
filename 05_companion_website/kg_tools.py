@@ -1,5 +1,5 @@
 """
-EMT-InMap knowledge-graph query and hypothesis generation module.
+PlastInMap knowledge-graph query and hypothesis generation module.
 
 Loads pre-computed KG tables exported from the ChatEMT pipeline
 (see README.md → "KG Lineage" for full data provenance).
@@ -69,6 +69,7 @@ PROVIDER_MODELS: dict[str, list[str]] = {
         "nousresearch/hermes-3-llama-3.1-405b:free",
     ],
     "OpenAI": [
+        "gpt-6.1-terra",
         "gpt-5.6-terra",
         "gpt-5.6-terra-pro",
         "gpt-5.6-sol",
@@ -524,7 +525,7 @@ def build_context(query: str) -> str:
     if not sections:
         return (
             "No specific assembly or causal context found for this query "
-            "in the EMT-InMap knowledge base."
+            "in the PlastInMap knowledge base."
         )
     return "\n".join(sections)
 
@@ -624,9 +625,9 @@ def generate_hypothesis(
 
     context = build_context(query)
     user_message = (
-        f"EMT-InMap Knowledge Base Context:\n{context}\n\n"
+        f"PlastInMap Knowledge Base Context:\n{context}\n\n"
         f"User Query: {query}\n\n"
-        "Based on the above EMT-InMap assembly context, generate a focused mechanistic "
+        "Based on the above PlastInMap assembly context, generate a focused mechanistic "
         "hypothesis addressing this query. Reference specific assemblies and causal edges."
     )
 
@@ -639,7 +640,7 @@ def generate_hypothesis(
             base_url="https://opencode.ai/zen/v1",
             extra_headers={
                 "HTTP-Referer": "https://emt-inmap.ohsu.edu",
-                "X-Title": "EMT-InMap Hypothesis Generator",
+                "X-Title": "PlastInMap Hypothesis Generator",
             },
         )
 
@@ -652,7 +653,7 @@ def generate_hypothesis(
             base_url="https://openrouter.ai/api/v1",
             extra_headers={
                 "HTTP-Referer": "https://emt-inmap.ohsu.edu",
-                "X-Title": "EMT-InMap Hypothesis Generator",
+                "X-Title": "PlastInMap Hypothesis Generator",
             },
         )
 

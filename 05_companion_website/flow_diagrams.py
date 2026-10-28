@@ -340,7 +340,7 @@ def mermaid_to_plotly(text: str) -> go.Figure | None:
             mid_y = (source_y + target_y) / 2
             figure.add_annotation(
                 x=mid_x,
-                y=mid_y,
+                y=mid_y + 0.55,
                 text=f"<b>{escape(edge.label)}</b>",
                 showarrow=False,
                 font={"family": "Inter, Arial, sans-serif", "size": 10, "color": color},
@@ -496,7 +496,7 @@ def mermaid_to_svg(text: str) -> str | None:
                 f'<line x1="{sx:.1f}" y1="{sy:.1f}" x2="{ex:.1f}" y2="{ey:.1f}" stroke="{color}" stroke-width="2" {dash} marker-end="{marker}" />'
             )
             if edge.label:
-                mx, my = (sx + ex) / 2, (sy + ey) / 2
+                mx, my = (sx + ex) / 2, (sy + ey) / 2 - 40
                 lbl = escape(edge.label)
                 svg_parts.append(
                     f'<g><rect x="{mx - 35:.1f}" y="{my - 10:.1f}" width="70" height="20" rx="4" fill="#ffffff" stroke="{color}" stroke-width="0.8"/><text x="{mx:.1f}" y="{my + 4:.1f}" font-family="sans-serif" font-size="10" fill="{color}" text-anchor="middle">{lbl}</text></g>'
